@@ -8,8 +8,7 @@ It works from GitHub Pages and when `index.html` is opened directly from disk.
 index.html                 the page; the link config block is at the top of <head>
 .nojekyll                  tells GitHub Pages to serve the files as they are
 assets/css/style.css       styles, light and dark (follows the system setting)
-assets/js/main.js          link config, copy buttons, table toggle, the three charts
-assets/data/page-data.js   numbers behind the charts (see "Data" below)
+assets/js/main.js          link config, copy buttons, table toggle, section highlight in the nav
 assets/img/*.webp          figures exported from the paper
 assets/img/social-card.jpg 1200 x 630 preview image for link sharing
 ```
@@ -38,16 +37,15 @@ To preview locally, open `index.html` in a browser, or run `python3 -m http.serv
 - [x] **Affiliations**: Show Lab, National University of Singapore.
 - [ ] **BibTeX**: authors are filled; replace `arXiv:XXXX.XXXXX` after the arXiv submission (search for `TODO BibTeX`).
 - [x] **Acknowledgements**: removed, as in the arXiv paper.
-- [ ] **Run locally**: replace the placeholder install and scan commands with the released ones, and delete the "not public yet" sentence (search for `PLACEHOLDER`).
 - [x] **Abstract**: now the same text as the arXiv paper.
 - [x] **Social preview**: `og:image` and `og:url` point to https://showlab.github.io/vae-rhythm/.
 
-## Data
+## Content
 
-`assets/data/page-data.js` holds the numbers the interactive charts draw:
-
-- the mean phase-scan residual curves and their standard errors for all 42 panels of the paper's rhythm atlas (39 generator variants, one variant with a second window setting, and the two real cohorts), exactly as plotted in the paper;
-- the per-variant statistics of the paper's supplementary table of real-versus-generated statistics, with the source VAE and 720p AUROC of the census table;
-- the AUROC of the 19 detectors with and without the VAE Rhythm plug-in, from the paper's full plug-in table.
-
+The page is a short summary of the paper: title and links, the teaser figure, the abstract, one figure of VAE Rhythm,
+the method overview and the main results table (compact by default, with a button that shows all 19 methods).
 The main results table is written directly in `index.html`. Figures in `assets/img/` are exports of the paper's figures with no metadata.
+
+An earlier, longer version (until commit `9e93f12`) also had an explorer of all 39 variants, an interactive plug-in chart,
+the phase-scan details, the analysis and scale-law figures, a limitations section and run instructions.
+It can be restored from the git history if needed.
