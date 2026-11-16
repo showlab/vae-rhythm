@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAE Rhythm: Temporal Decoding Traces for AI-Generated Video Detection</title>
+<meta name="description" content="Most video generators decode latents with a 3D causal VAE that groups frames in time. A training-free phase scan reads the resulting periodic trace, VAE Rhythm, and uses it to detect AI-generated video.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101b26" media="(prefers-color-scheme: dark)">
+
+<!-- ================================================================
+     EDIT HERE: project links. Every placeholder link on the page is
+     filled from this one block. Leave "#" for links that are not
+     public yet; those buttons are shown as "coming soon".
+     ================================================================ -->
+<script>
+window.PROJECT_LINKS = {
+  paper:  "#",  // arXiv abstract page, e.g. https://arxiv.org/abs/XXXX.XXXXX
+  code:   "https://github.com/showlab/vae-rhythm",  // GitHub repository
+  models: "#",  // Hugging Face model page (CaDet / CaDet-GF weights)
+  data:   "#",  // Hugging Face dataset page (VAE pairs, per-video scores)
+  demo:   "https://checkai.space/dashboard?mode=video"  // live demo
+};
+</script>
+
+<!-- Social preview -->
+<meta property="og:url" content="https://showlab.github.io/vae-rhythm/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VAE Rhythm: Temporal Decoding Traces for AI-Generated Video Detection">
+<meta property="og:description" content="A periodic trace of VAE decoding, read by a training-free phase scan, for detecting AI-generated video.">
+<meta property="og:image" content="https://showlab.github.io/vae-rhythm/assets/img/social-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23172c42'/%3E%3Cpath d='M5 17l3.5-7 4 11 3.5-11 4 11 3.5-11 3.5 7' fill='none' stroke='%23e08a5f' stroke-width='2.6' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/data/page-data.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-bar">
+  <div class="site-bar-inner">
+    <a class="site-name" href="#top">VAE Rhythm</a>
+    <nav class="site-nav" aria-label="Sections">
+      <ul>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#rhythm">VAE Rhythm</a></li>
+        <li><a href="#phase-scan">Phase scan</a></li>
+        <li><a href="#uses">Using the rhythm</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+        <li><a href="#try">Try it</a></li>
+        <li><a href="#bibtex">BibTeX</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="page">
+
+  <!-- ============================================================ hero -->
+  <header class="hero wide" id="top">
+    <h1 class="title">
+      <span class="title-name">VAE Rhythm:</span>
+      <span class="title-sub">Temporal Decoding Traces for <span class="nowrap">AI-Generated</span> Video Detection</span>
+    </h1>
+
+    <!-- To link a name, wrap it as <a href="https://...">Name</a>. -->
+    <p class="authors">
+      <span class="author">Ke Sun</span>,
+      <span class="author">Shuwei Li</span>,
+      <span class="author">Haiyang Mei</span>,
+      <span class="author">Mike Zheng Shou<sup>&dagger;</sup></span>
+    </p>
+    <p class="affiliations">
+      <span>Show Lab, National University of Singapore</span>
+      <span><sup>&dagger;</sup>Corresponding author</span>
+    </p>
+    <p class="status">Preprint</p>
+
+    <ul class="links" aria-label="Paper, code, models, data and live demo">
+      <li><a class="btn" data-link="paper" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
+        Paper <span class="soon">coming soon</span></a></li>
+      <li><a class="btn" data-link="code" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>
+        Code <span class="soon">coming soon</span></a></li>
+      <li><a class="btn" data-link="models" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>
+        Models <span class="soon">coming soon</span></a></li>
+      <li><a class="btn" data-link="data" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
+        Data <span class="soon">coming soon</span></a></li>
+      <li><a class="btn btn-primary" data-link="demo" href="https://checkai.space/dashboard?mode=video" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg>
+        Live demo</a></li>
+    </ul>
+
+    <figure class="strip" aria-labelledby="strip-caption">
+      <div class="strip-chart chart" id="hero-strip"></div>
+      <figcaption class="strip-caption" id="strip-caption">
+        Measured by the phase scan: the mean residual <i>r</i>(<i>k</i>) at each start offset <i>k</i>,
+        for 50 Sora clips and 300 real clips from AIGVDBench. Pale bands repeat every four offsets.
+      </figcaption>
+    </figure>
+  </header>
+
+  <!-- ============================================================ overview -->
+  <div class="intro-block wide">
+    <div class="intro-text">
+      <p class="lead">
+        Most video generators decode their latents with a 3D causal VAE that usually groups frames in fours,
+        so frame fidelity varies with a frame's position in its group.
+        A training-free phase scan with an off-the-shelf VAE reads this VAE Rhythm from the pixels;
+        we use it to detect generated videos, to improve existing detectors and to build training pairs from real videos alone.
+      </p>
+    </div>
+    <figure>
+      <a class="plate" href="assets/img/teaser.webp" aria-label="Open the VAE Rhythm overview figure at full size">
+        <img src="assets/img/teaser.webp" width="1401" height="1114"
+             alt="Panel a: a 4x causal VAE groups Sora frames, with frame 0 on its own latent and frames 1 to 4 sharing the next latent, while real frames have no groups. Panel b: shifting a 4x VAE window along the clip realigns its groups with the clip's every four starts, so the residual r(k) of a Sora clip oscillates while that of a real clip stays nearly flat.">
+      </a>
+      <figcaption>
+        <strong>VAE Rhythm.</strong> (a) A 4× causal VAE decodes frames in groups, illustrated on Sora frames.
+        (b) As the VAE window shifts, its groups realign with the clip's every four starts, so the residual of a typical Sora clip oscillates while that of a typical real clip stays nearly flat.
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- ============================================================ abstract -->
+  <section class="section" id="abstract" aria-labelledby="abstract-title">
+    <h2 class="section-title" id="abstract-title">Abstract</h2>
+    <p>
+      Visible artifacts are an unreliable cue for detecting generated videos, because newer generators learn to remove them. We instead detect a trace left by the generation pipeline itself. Most video generators decode latents with a 3D causal VAE that groups consecutive frames in time, so the fidelity of generated frames rises and falls periodically with their position in a group. We call this periodic trace <strong>VAE Rhythm</strong>. Real videos are captured frame by frame and do not have it. To reveal it without training, we propose a <em>phase scan</em>. The scan reconstructs a clip with an off-the-shelf VAE from successive start offsets and measures the periodicity of the reconstruction error across these offsets. We find VAE Rhythm in most of the 39 variants of 31 generators we test, including the closed-source Sora, Kling 3.0 and Seedance 2.0. We use the rhythm as a zero-shot score, as a plug-in for existing detectors and as a data engine that pairs real videos with their VAE reconstructions to train our detector CaDet. On DF26, the training-free rhythm score outperforms all 15 retrained baselines, and as a plug-in it improves all 19 tested detectors by 6.7% to 23.7% AUROC. CaDet achieves the best AUROC on AIGVDBench, DF26 and three 2026 closed-source models, and its variant trained without any generated video still exceeds 90% on AIGVDBench.
+    </p>
+  </section>
+
+  <!-- ============================================================ VAE Rhythm -->
+  <section class="section" id="rhythm" aria-labelledby="rhythm-title">
+    <h2 class="section-title" id="rhythm-title">VAE Rhythm</h2>
+
+    <div class="split wide">
+      <div class="text">
+        <p>
+          Most mainstream video generators work in the latent space of a 3D causal video VAE and decode the result into RGB frames at the end.
+          To reduce computation, the VAE compresses time as well as space.
+          In the standard 4× scheme the first frame is encoded on its own and each following group of four frames shares one latent,
+          so 1&#8239;+&#8239;4<i>n</i> frames map to 1&#8239;+&#8239;<i>n</i> latents. LTX-Video groups eight frames instead.
+        </p>
+        <p>
+          The grouping is invisible to viewers, but causal 3D convolutions treat the positions inside a group differently,
+          so how faithfully a frame is reconstructed depends on where it sits in its group.
+          The result is a periodic variation in frame fidelity, usually with a period of four frames, which we call VAE Rhythm.
+          A camera captures each frame independently and has no such groups.
+        </p>
+        <p>
+          We scanned 39 variants of 31 generators released from 2023 to 2026.
+          In open- and closed-source models alike, the mean residual curves repeat their peaks and troughs,
+          with a period of four frames in most families, eight in LTX and Kling 3.0, and about five in Wan 2.6.
+          Real clips show no repeating pattern, and the rhythm is absent in Gen-2 and Pika.
+        </p>
+      </div>
+      <figure>
+        <a class="plate" href="assets/img/rhythm-curves.webp" aria-label="Open the rhythm curves figure at full size">
+          <img src="assets/img/rhythm-curves.webp" width="1241" height="1142" loading="lazy" decoding="async"
+               alt="Eight small line charts of the mean residual r(k) against start offset k from 0 to 23. The two real cohorts, AIGVDBench and DF26, are nearly flat. Sora, Wan 2.2 T2V, Kling 3.0, Wan 2.6, Grok Imagine and Seedance 2.0 oscillate regularly, each labelled with its zero-shot AUROC.">
+        </a>
+        <figcaption>
+          <strong>VAE Rhythm in real and generated videos.</strong>
+          Mean residuals over 50 to 300 clips, with pale bands at each panel's period and thin lines for the real clips of the same benchmark.
+          These generators were selected for signal strength and prominence; the explorer below shows all 39 variants.
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ---------------------------------------------------------- explorer -->
+    <div class="panel wide explorer" id="explorer">
+      <h3 class="panel-title" id="explorer-title">Explore all 39 variants</h3>
+      <p class="panel-sub">
+        Pick a generator to see its mean residual curve next to the real clips of its own benchmark.
+        Curves are averaged as measured, without phase alignment or smoothing, and the shaded band is one standard error.
+        The vertical range follows the paper's atlas and widens only for the strongest variants.
+      </p>
+      <noscript><p class="note">The explorer needs JavaScript. The same curves are in the
+        <a href="assets/img/rhythm-atlas.webp">static atlas of all 39 variants</a>.</p></noscript>
+
+      <div class="ex-controls">
+        <div class="ex-picker">
+          <button class="icon-btn" type="button" id="ex-prev" aria-label="Previous variant">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+          </button>
+          <label class="visually-hidden" for="ex-select">Generator variant</label>
+          <select id="ex-select"></select>
+          <button class="icon-btn" type="button" id="ex-next" aria-label="Next variant">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
+          </button>
+        </div>
+        <ul class="legend" aria-label="Legend">
+          <li><span class="key-line gen"></span>Generated, mean</li>
+          <li><span class="key-sem"></span>±1 standard error</li>
+          <li><span class="key-line real"></span>Real clips, same benchmark</li>
+          <li><span class="key-band"></span>Period, at the dips</li>
+        </ul>
+      </div>
+
+      <div class="ex-body">
+        <div class="chart" id="ex-chart" tabindex="0" role="group" aria-roledescription="chart"
+             aria-label="Mean residual curve of the selected variant. Use the left and right arrow keys to read values at each offset."></div>
+        <div class="ex-stats" id="ex-stats" aria-live="polite"></div>
+      </div>
+      <p class="visually-hidden" id="ex-readout" aria-live="polite"></p>
+      <p class="note" style="margin-top:.75rem">
+        Real and generated means both rise near the last offsets; a single excursion like this is not evidence of periodicity.
+        The 2026 models and the short-window scans have no matched real cohort, so no real curve is drawn for them.
+        <a href="assets/img/rhythm-atlas.webp">Static atlas of all panels</a>.
+      </p>
+
+      <details class="ex-browse" id="ex-browse" open>
+        <summary>Browse all panels</summary>
+        <div id="ex-grid" role="radiogroup" aria-label="Generator variants"></div>
+      </details>
+
+      <details class="table-view">
+        <summary>Values of the selected curve</summary>
+        <div class="table-wrap" id="ex-table"></div>
+      </details>
+    </div>
+
+    <h3>Real versus generated</h3>
+    <div class="split wide">
+      <div class="text">
+        <p>
+          Against the real clips of their own benchmark, most open- and closed-source variants sit far above in both rhythm strength and phase agreement.
+          The rhythm statistic of the median variant is 2.2 times that of real clips,
+          and a threshold exceeded by only 5% of real clips is exceeded by 34% of the median variant's clips.
+          Under a one-sided Mann–Whitney test with Holm correction, the difference is significant for 30 of the 36 window-matched variants.
+        </p>
+        <p>
+          Phases separate the two classes as well. Real clips are consistent with uniform phases, with a phase concentration <i>R</i> near 0.08,
+          whereas the median variant reaches 0.52, as expected when every clip's groups start at its first frame.
+          The exceptions are Gen-2 and Pika, which fall below the real clips, and Jimeng, Wan (web) and two LTX variants, which do not reach significance with 50 clips each.
+        </p>
+        <p>
+          Controls point to VAE decoding as the source. A VAE round trip gives real clips the rhythm while matched x264 re-encoding does not,
+          and removing two leading frames shifts the phase by two positions, as the grouping predicts.
+        </p>
+      </div>
+      <figure>
+        <a class="plate" href="assets/img/rhythm-stats.webp" aria-label="Open the rhythm strength and phase figure at full size">
+          <img src="assets/img/rhythm-stats.webp" width="1241" height="764" loading="lazy" decoding="async"
+               alt="Two scatter plots, open-source and closed-source. Each point is one generator variant, placed by the share of its clips above the 95th percentile of real clips and by its phase concentration R. Real clips sit in the lower-left corner; most variants lie above and to the right, with Gen-2 and Pika near the real clips.">
+        </a>
+        <figcaption>
+          <strong>Rhythm strength and phase, real vs. generated.</strong>
+          Each point is one window-matched variant: the share of its clips above the 95th percentile of real clips against its phase concentration <i>R</i>.
+          Shading shows the density of variants, and triangles mark the medians.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================ phase scan -->
+  <section class="section" id="phase-scan" aria-labelledby="scan-title">
+    <h2 class="section-title" id="scan-title">Phase scan</h2>
+    <p>
+      The phase scan measures the periodicity of reconstruction error rather than its level.
+      It needs no training and no access to the source generator: a frozen, off-the-shelf 4× causal VAE is enough, by default the one of Wan2.1.
+    </p>
+
+    <div class="split wide">
+      <div class="text">
+        <ol class="steps">
+          <li>
+            <span class="step-title">Shift and reconstruct.</span>
+            For each start offset <i>k</i>&nbsp;=&nbsp;0,&nbsp;…,&nbsp;<i>K</i>&nbsp;−&nbsp;1, reconstruct the <i>W</i>-frame window that starts at frame <i>k</i>
+            and record the RGB mean-squared error <i>e</i>(<i>k</i>,&nbsp;<i>j</i>) of its <i>j</i>-th frame, with pixels normalized to [−1,&nbsp;1].
+            The defaults are <i>K</i>&nbsp;=&nbsp;24 offsets and <i>W</i>&nbsp;=&nbsp;13 frames, which spans the first 36 frames of a clip.
+          </li>
+          <li>
+            <span class="step-title">Remove the content baseline.</span>
+            A frame's error also depends on its content, so each absolute frame <i>t</i> is compared with
+            <math><mover accent="true"><mi>e</mi><mo>¯</mo></mover><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></math>,
+            its mean error over all windows that cover it.
+            Window position <i>j</i>&nbsp;=&nbsp;0 is left out because the VAE encodes the first frame of a window separately.
+          </li>
+          <li>
+            <span class="step-title">Average into a residual profile.</span>
+            The remaining errors are averaged over the window and divided by the mean
+            <math><mover accent="true"><mi>E</mi><mo>¯</mo></mover></math> of the whole error table:
+            <div class="equation">
+              <math display="block">
+                <mrow>
+                  <mi>r</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><mo>=</mo>
+                  <mfrac>
+                    <mn>1</mn>
+                    <mrow><mo stretchy="false">(</mo><mi>W</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mspace width="0.17em"></mspace><mover accent="true"><mi>E</mi><mo>¯</mo></mover></mrow>
+                  </mfrac>
+                  <munderover>
+                    <mo>∑</mo>
+                    <mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow>
+                    <mrow><mi>W</mi><mo>−</mo><mn>1</mn></mrow>
+                  </munderover>
+                  <mrow>
+                    <mo>[</mo>
+                    <mi>e</mi><mo stretchy="false">(</mo><mi>k</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo>
+                    <mo>−</mo>
+                    <mover accent="true"><mi>e</mi><mo>¯</mo></mover><mo stretchy="false">(</mo><mi>k</mi><mo>+</mo><mi>j</mi><mo stretchy="false">)</mo>
+                    <mo>]</mo>
+                  </mrow>
+                </mrow>
+              </math>
+            </div>
+          </li>
+          <li>
+            <span class="step-title">Measure periodicity.</span>
+            <math><msub><mi>C</mi><mn>4</mn></msub></math> and <math><msub><mi>C</mi><mn>8</mn></msub></math>
+            are the shares of residual variance in the period-4 and period-8 harmonic combs.
+            <math><msub><mi>P</mi><mi>pk</mi></msub></math> is the largest normalized periodogram bin after 4× zero-padding, over periods from 2.5 to 9 frames;
+            this range includes the period of 5 that appears when a four-frame pattern at 24&nbsp;fps is delivered at 30&nbsp;fps.
+            The phase of the period-4 or period-8 component, and its concentration <i>R</i> across clips, from 0 for scattered phases to 1 for perfect alignment,
+            show whether clips share one alignment.
+          </li>
+        </ol>
+        <p>
+          When the scan's groups line up with the clip's, reconstruction becomes easier and the error drops; the alignment returns every four offsets.
+          A generated clip therefore gives an oscillating <i>r</i>(<i>k</i>) and a real clip a nearly flat one.
+        </p>
+        <p class="note">
+          A scan costs <i>K</i>&nbsp;×&nbsp;<i>W</i> VAE frame passes. At 480p the default scan takes about 13&nbsp;s per clip on an H200 GPU and 52&nbsp;s on an A6000.
+        </p>
+      </div>
+      <figure>
+        <a class="plate" href="assets/img/phase-scan.webp" aria-label="Open the phase scan figure at full size">
+          <img src="assets/img/phase-scan.webp" width="1200" height="1176" loading="lazy" decoding="async"
+               alt="Panel a: a W-frame window slides along the clip one frame at a time, k equals 0, 1 and 2, and each window passes through the same frozen 4x VAE to give per-frame errors e(k, j). Panel b: the error table e(k, j), minus the same-frame mean along the diagonal, averaged over j greater than 0, gives the oscillating residual r(k).">
+        </a>
+        <figcaption>
+          <strong>Phase scan in detail.</strong>
+          (a) A <i>W</i>-frame window shifts by one frame per pass through the same frozen VAE.
+          (b) The stacked errors minus the same-frame mean, the orange diagonal, are averaged over <i>j</i>&nbsp;&gt;&nbsp;0 to give <i>r</i>(<i>k</i>); the values are schematic.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================ uses -->
+  <section class="section" id="uses" aria-labelledby="uses-title">
+    <h2 class="section-title" id="uses-title">Using the rhythm</h2>
+    <p>
+      We use VAE Rhythm in three ways: directly as a zero-shot score, as a plug-in that adds rhythm evidence to an existing detector without retraining it,
+      and as a data engine whose VAE pairs train our detector CaDet.
+    </p>
+
+    <figure class="wide">
+      <a class="plate" href="assets/img/overview.webp" aria-label="Open the method overview figure at full size">
+        <img src="assets/img/overview.webp" width="2001" height="979" loading="lazy" decoding="async"
+             alt="Method overview in three panels. Panel a: a frozen video VAE serves the phase scan, whose residual periodicity gives the zero-shot score, and the VAE pairs, where a real clip and its VAE reconstruction pass through the same post-processing chain. Panel b: CaDet, with an artifact path trained with the pairs and a semantic path trained without them on one frozen DINOv3 backbone, summed into one score. Panel c: the plug-in adds the positive part of the standardized rhythm score to any detector's standardized score.">
+      </a>
+      <figcaption>
+        <strong>Overview.</strong>
+        (a) A frozen video VAE serves the phase scan, whose periodicity gives the zero-shot score <i>s</i><sub>c</sub>, and the VAE pairs, which differ only by a VAE round trip.
+        (b) CaDet trains an artifact path with the pairs and a semantic path without them on one frozen DINOv3 backbone.
+        (c) The plug-in adds positive rhythm evidence to the score of any detector. All plots, tables and the difference map are measured.
+      </figcaption>
+    </figure>
+
+    <h3 id="zero-shot">Zero-shot score</h3>
+    <p>
+      Each clip is scanned once with the frozen Wan2.1 VAE and scored by the share of residual variance at its family's period, with no training, thresholds or calibration.
+      Against the real clips of the same benchmark the score exceeds chance on 34 of the 36 window-matched variants.
+      It is strongest on open-source generators with a 4× VAE, as the mechanism predicts, and it also works on closed-source models whose VAEs are unknown, such as Sora and Kling 3.0.
+      It is weaker on the 8× LTX family, which a 4× measurement VAE does not match, and Gen-2 and Pika stay below chance.
+    </p>
+    <p>
+      With the single statistic <math><msub><mi>P</mi><mi>pk</mi></msub></math> for every generator, the score reaches 76.2 AUROC over DF26's ten generators,
+      5.8 points above the best retrained baseline, Effort. On AIGVDBench, where supervised detectors are trained on Open-Sora, it trails most of them.
+    </p>
+
+    <h3 id="plugin">VAE Rhythm plug-in</h3>
+    <p>The plug-in adds rhythm evidence to the score <math><msub><mi>s</mi><mi>d</mi></msub></math> of an existing detector:</p>
+    <div class="equation">
+      <math display="block">
+        <mi>s</mi><mo>=</mo><mi>z</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>d</mi></msub><mo stretchy="false">)</mo><mo>+</mo>
+        <mi>max</mi><mo>&#x2061;</mo><mrow><mo>(</mo><mn>0</mn><mo separator="true">,</mo><mspace width="0.17em"></mspace><mi>z</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>c</mi></msub><mo stretchy="false">)</mo><mo>)</mo></mrow>
+      </math>
+    </div>
+    <p>
+      Here <math><msub><mi>s</mi><mi>c</mi></msub></math> is the zero-shot statistic <math><msub><mi>P</mi><mi>pk</mi></msub></math>
+      and <i>z</i>(·) is a standardization computed on real videos only.
+      Many detector scores are saturated probabilities, so <math><mi>z</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>d</mi></msub><mo stretchy="false">)</mo></math>
+      maps a score to the standard-normal quantile of its rank among the real-video scores and continues linearly beyond their range.
+      Both standardizations are calibrated once on AIGVDBench validation reals, 300 clips for the rhythm and 3,000 for the detector, and reused unchanged on every benchmark;
+      no weight is fitted to generated videos.
+      The positive part lets a strong rhythm raise the score while a missing rhythm never lowers it, because motion, resampling and scale can all weaken the signal.
+    </p>
+
+    <div class="panel wide" id="plugin-panel">
+      <h3 class="panel-title" id="plugin-title">The plug-in on 19 detectors</h3>
+      <p class="panel-sub">
+        AUROC of 16 retrained baselines and our three detectors, each without and with the plug-in. Choose a benchmark.
+      </p>
+      <div class="seg" id="plugin-seg" role="radiogroup" aria-label="Benchmark"></div>
+      <ul class="legend db-legend" aria-label="Legend">
+        <li><span class="key-dot without"></span>Without plug-in</li>
+        <li><span class="key-dot with"></span>With plug-in</li>
+        <li><span class="key-ref"></span>Rhythm alone, zero-shot</li>
+      </ul>
+      <div class="chart" id="plugin-chart" tabindex="0" role="group" aria-roledescription="chart"
+           aria-label="AUROC of 19 detectors without and with the plug-in. Use the up and down arrow keys to read each detector's values."></div>
+      <p class="visually-hidden" id="plugin-readout" aria-live="polite"></p>
+      <noscript><p class="note">This chart needs JavaScript; the paper's plug-in tables list the same values.</p></noscript>
+      <p class="note" style="margin-top:.75rem">
+        The AIGVDBench columns use the 6,443 scanned clips, and the open-source average covers the 15 generators whose scans match the real clips,
+        so base scores differ slightly from the main results table below.
+      </p>
+      <details class="table-view">
+        <summary>Values for the selected benchmark</summary>
+        <div class="table-wrap" id="plugin-table"></div>
+      </details>
+    </div>
+
+    <p>
+      On DF26 all 19 detectors improve. The gain follows how measurable the rhythm is: across generators it tracks the rhythm's zero-shot AUROC
+      and turns positive once that AUROC passes about 55, and weaker detectors gain more.
+      Where the rhythm is weaker, on AIGVDBench's closed-source generators and the 2026 models, 13 and 18 of the 19 detectors improve and none loses more than 1.8 points.
+      Detectors trained with VAE pairs also gain on DF26, so the temporal scan adds evidence that frame-level training does not capture.
+    </p>
+
+    <h3 id="engine">VAE-pair engine</h3>
+    <p>
+      A VAE round trip gives real clips the rhythm, which suggests a way to make training data without sampling any video generator.
+      From a real clip <i>x</i>, the engine emits a pair labelled real and generated:
+    </p>
+    <div class="equation">
+      <math display="block">
+        <msup><mi>x</mi><mo>+</mo></msup><mo>=</mo><mi>c</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>G</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo><mo separator="true">,</mo>
+      </math>
+      <math display="block">
+        <msup><mi>x</mi><mo>−</mo></msup><mo>=</mo><mi>c</mi><mo stretchy="false">(</mo><mi>𝒟</mi><mo stretchy="false">(</mo><mi>ℰ</mi><mo stretchy="false">(</mo><msub><mi>s</mi><mi>G</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo>
+      </math>
+    </div>
+    <p>
+      Here <math><msub><mi>s</mi><mi>G</mi></msub></math> rescales the clip to a reconstruction short side <i>G</i>,
+      <math><mi>𝒟</mi><mo>∘</mo><mi>ℰ</mi></math> is one round trip through a frozen video VAE,
+      and <i>c</i>(·;&nbsp;<i>θ</i>) is a post-processing chain with random parameters <i>θ</i>:
+      leading-frame trimming, rescaling to a delivery size, frame-rate conversion and x264 or x265 compression.
+      The two members share content, resolution, frame rate, codec and every random choice of the chain, so the VAE is the only difference.
+      The VAE is drawn from the 4× VAEs of Wan2.1, HunyuanVideo and CogVideoX and the 8× VAE of LTX-Video.
+      From the 4,000 real clips of AIGVDBench's training split, the engine produces 4,818 pairs plus 1,030 held-out clips for validation.
+    </p>
+
+    <h3 id="cadet">CaDet and CaDet-GF</h3>
+    <p>
+      CaDet attaches two parameter-efficient paths to one frozen DINOv3 ViT-L/16 backbone, and both read 8 frames per clip.
+      The <em>artifact path</em> is trained with the VAE pairs: LoRA adapters feed a generic head, for which both members of a pair count as real,
+      and an artifact head that keeps the VAE reconstructions as generated.
+      The <em>semantic path</em> follows Effort's orthogonal fine-tuning and never sees the pairs.
+      Each path's score is standardized on validation reals and the two are summed with no fitted weight; inference costs two ViT-L forward passes.
+    </p>
+    <p>
+      Keeping the pairs out of the semantic path matters: adding them to Effort's own training helps on open-source generators but hurts on closed-source ones.
+      CaDet-GF is the generator-free variant, a single LoRA path trained on real clips and VAE pairs only and selected on held-out pairs,
+      so no generator-produced video enters training or model selection.
+    </p>
+
+    <h3 id="results">Results</h3>
+    <p>
+      All detectors are trained on AIGVDBench's Open-Sora and real clips and tested without retraining,
+      against 15 baselines that we retrained with their official code under one protocol.
+    </p>
+    <div class="table-block wide">
+      <p class="scroll-hint">Scroll the table sideways to see all columns.</p>
+      <div class="table-wrap" id="main-table-wrap">
+        <table class="results" id="main-table">
+          <caption>
+            <strong>Main results</strong> (AUROC, %), selected columns.
+            ± is the standard deviation over 3 seeds, and bold marks the best per column.
+            The paper's table adds unseen-generator, DF26 open-source and paired 2AFC columns.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" rowspan="2" style="text-align:left">Method</th>
+              <th scope="colgroup" colspan="2">AIGVDBench</th>
+              <th scope="col">2026 closed</th>
+              <th scope="colgroup" colspan="2">DF26</th>
+            </tr>
+            <tr>
+              <th scope="col">20 open</th>
+              <th scope="col">11 closed</th>
+              <th scope="col">3 models</th>
+              <th scope="col">all</th>
+              <th scope="col">closed</th>
+            </tr>
+          </thead>
+      <tbody class="row-extra">
+        <tr><th class="group" colspan="6" scope="rowgroup">Image forensics, frame-level</th></tr>
+        <tr class="row-extra"><th scope="row">CNNSpot</th><td>82.1<span class="sd">±1.2</span></td><td>71.4<span class="sd">±2.4</span></td><td>78.0</td><td>53.5</td><td>35.5</td></tr>
+        <tr class="row-extra"><th scope="row">Gram-Net</th><td>82.4<span class="sd">±0.4</span></td><td>67.0<span class="sd">±1.4</span></td><td>76.9</td><td>52.9</td><td>37.3</td></tr>
+        <tr class="row-extra"><th scope="row">FreDect</th><td>60.9<span class="sd">±1.8</span></td><td>52.9<span class="sd">±1.2</span></td><td>60.8</td><td>60.8</td><td>63.4</td></tr>
+        <tr class="row-extra"><th scope="row">Fusing</th><td>67.0</td><td>51.5</td><td>64.9</td><td>46.0</td><td>35.0</td></tr>
+        <tr class="row-extra"><th scope="row">UnivFD</th><td>77.3<span class="sd">±0.0</span></td><td>65.4<span class="sd">±0.1</span></td><td>60.3</td><td>54.0</td><td>46.1</td></tr>
+        <tr class="row-extra"><th scope="row">NPR</th><td>73.9<span class="sd">±0.8</span></td><td>60.7<span class="sd">±0.8</span></td><td>69.5</td><td>44.1</td><td>30.7</td></tr>
+      </tbody>
+      <tbody>
+        <tr><th class="group" colspan="6" scope="rowgroup">Video classifiers</th></tr>
+        <tr><th scope="row">TimeSformer</th><td>74.3</td><td>90.7</td><td>86.4</td><td>67.0</td><td>75.8</td></tr>
+        <tr class="row-extra"><th scope="row">UniFormerV2</th><td>81.4</td><td>91.2</td><td>64.9</td><td>50.6</td><td>55.3</td></tr>
+      </tbody>
+      <tbody>
+        <tr><th class="group" colspan="6" scope="rowgroup">Video detectors</th></tr>
+        <tr><th scope="row">DeMamba</th><td>80.3</td><td>78.1</td><td>71.6</td><td>61.4</td><td>62.3</td></tr>
+        <tr class="row-extra"><th scope="row">DeCoF</th><td>80.6</td><td>78.7</td><td>70.9</td><td>59.8</td><td>58.5</td></tr>
+        <tr class="row-extra"><th scope="row">ReStraV</th><td>52.2</td><td>48.6</td><td>62.7</td><td>57.4</td><td>53.9</td></tr>
+        <tr class="row-extra"><th scope="row">ForgeLens, setting 3</th><td>75.5<span class="sd">±1.8</span></td><td>82.4<span class="sd">±5.9</span></td><td>74.3</td><td>55.6</td><td>60.1</td></tr>
+        <tr class="row-extra"><th scope="row">ForgeLens, setting 1</th><td>74.1<span class="sd">±2.8</span></td><td>65.0<span class="sd">±1.9</span></td><td>63.6</td><td>46.6</td><td>31.3</td></tr>
+        <tr><th scope="row">ForgeLens, setting-1 schedule, full data</th><td>85.7</td><td>87.4</td><td>83.2</td><td>60.3</td><td>56.5</td></tr>
+        <tr><th scope="row">Effort</th><td>84.3<span class="sd">±1.2</span></td><td>92.5<span class="sd">±1.9</span></td><td>81.6</td><td>70.4</td><td>73.4</td></tr>
+        <tr class="row-extra"><th scope="row">Native-Scale</th><td>73.4<span class="sd">±2.1</span></td><td>68.0<span class="sd">±4.0</span></td><td>78.9</td><td>52.2</td><td>49.6</td></tr>
+      </tbody>
+      <tbody>
+        <tr><th class="group" colspan="6" scope="rowgroup">Ours</th></tr>
+        <tr><th scope="row">DINOv3-L LoRA, no pairs (same backbone)</th><td>68.9</td><td>81.2</td><td>79.3</td><td>62.1</td><td>65.2</td></tr>
+        <tr class="row-ours"><th scope="row">CaDet-GF: real videos and VAE pairs</th><td>90.9<span class="sd">±3.0</span></td><td>91.9<span class="sd">±3.0</span></td><td>84.8</td><td>65.8</td><td>51.3</td></tr>
+        <tr class="row-ours"><th scope="row">CaDet: benchmark data and VAE pairs, two paths</th><td><strong>93.9<span class="sd">±0.6</span></strong></td><td><strong>95.8<span class="sd">±0.7</span></strong></td><td><strong>88.3</strong></td><td><strong>78.5</strong></td><td><strong>79.0</strong></td></tr>
+      </tbody>
+        </table>
+      </div>
+      <div class="table-actions">
+        <button class="text-btn" type="button" id="table-toggle" hidden aria-controls="main-table-wrap" aria-expanded="false">Show all 19 methods</button>
+      </div>
+    </div>
+    <p>
+      CaDet leads every column. CaDet-GF, which never sees a generated video, comes close on AIGVDBench, so on this benchmark the VAE pairs carry most of the performance;
+      on DF26's closed-source generators it is weak, and there the semantic path of CaDet carries most of the transfer.
+      On the format-normalized GenBuster++ benchmark, TimeSformer and UniFormerV2 lead, and all methods perform poorly on ViF-Bench.
+    </p>
+
+    <figure class="wide">
+      <a class="plate" href="assets/img/analysis.webp" aria-label="Open the analysis figure at full size">
+        <img src="assets/img/analysis.webp" width="2001" height="612" loading="lazy" decoding="async"
+             alt="Three scatter plots. Panel a: per generator, the mean plug-in gain rises with the zero-shot AUROC of the rhythm, from losses near Gen-2 and Pika to large gains for Wan 2.2 T2V and Wan 2.6, with r = 0.89. Panel b: on DF26, detectors with lower AUROC without the plug-in gain more, with r = -0.95. Panel c: semantic-path AUROC against artifact-path AUROC per generator, weakly correlated with r = 0.30, with Grok and Veo 3.1 above the diagonal and HunyuanVideo 1.5 below it.">
+      </a>
+      <figcaption>
+        <strong>What drives the gains.</strong>
+        (a) The plug-in's gain on a generator, averaged over the 19 detectors, follows that generator's zero-shot AUROC.
+        (b) Weaker detectors gain more on DF26.
+        (c) The artifact and semantic paths succeed on different generators.
+        Bands in (a) and (b) are bootstrap 95% intervals of the fit; shading in (c) shows the density of each group.
+      </figcaption>
+    </figure>
+    <p>
+      The two paths are complementary rather than redundant. Across the 43 unseen generators their AUROCs barely correlate;
+      the artifact path is better on most open-source generators and the semantic path on all four closed-source models of DF26.
+      Summing the two strongest baselines instead falls below CaDet in every column.
+    </p>
+  </section>
+
+  <!-- ============================================================ limitations -->
+  <section class="section" id="limitations" aria-labelledby="limits-title">
+    <h2 class="section-title" id="limits-title">Limitations</h2>
+    <p>VAE Rhythm is evidence, not proof. These are the conditions that weaken it and the conclusions it does not support.</p>
+    <ul class="limits wide">
+      <li>
+        <span class="limit-title">Scan scale.</span>
+        Rhythm strength depends on the ratio of scan resolution to generation resolution, and scanning far below the generation resolution weakens it.
+        We scan at native resolution with the short side capped at 480p, or at 720p for 720p deliveries;
+        Veo 3.1, for example, is weak at 480p and much clearer at its native 720p.
+        Upscaling before the scan does not recover what was lost, and cropping is no substitute for the right scale.
+      </li>
+      <li>
+        <span class="limit-title">Motion.</span>
+        The rhythm is weak in nearly static clips, and its measured strength increases with motion.
+      </li>
+      <li>
+        <span class="limit-title">Post-processing.</span>
+        Subtracting the frame baseline does not make the profile invariant to every kind of processing.
+        Frame-rate conversion and resampling can weaken or shift the rhythm; Wan 2.6's period of about five frames is consistent with 24-to-30&nbsp;fps delivery.
+        Codecs can add periodic structure of their own: HEVC B-pyramids give some real clips a weak period-4 component at a different phase,
+        and a 24-to-16&nbsp;fps conversion produces period 2.
+        On ViF-Bench, whose clips are re-encoded to 256p at 16&nbsp;fps, all methods perform poorly.
+      </li>
+      <li>
+        <span class="limit-title">A missing rhythm is not evidence of a real video.</span>
+        Gen-2 and Pika show no rhythm under our protocol, and a weak mean curve can also come from phases that vary between clips.
+        Neither temporal compression alone nor a missing rhythm peak guarantees a detection outcome, which is why the plug-in only adds positive evidence.
+      </li>
+      <li>
+        <span class="limit-title">Measurement VAE.</span>
+        A 4× measurement VAE matches 8× families poorly, so the LTX family is weaker, and transfer between measurement VAEs is not uniform.
+      </li>
+      <li>
+        <span class="limit-title">Trained detectors.</span>
+        CaDet's artifact path alone stays weak on Grok and Veo despite their measurable rhythm, so CaDet relies on its semantic path there,
+        which doubles the backbone passes at inference.
+        Like other trained detectors, CaDet is sensitive to the real-video source: with a different source of real clips, its ranking falls well below chance.
+      </li>
+      <li>
+        <span class="limit-title">Choices made after seeing data.</span>
+        The plug-in's score standardization was revised after we observed saturated detectors, and <math><msub><mi>P</mi><mi>pk</mi></msub></math>
+        was chosen after we observed a period-5 family in DF26. A few detectors still lose up to 1.8 points where rhythm evidence is weak.
+      </li>
+    </ul>
+
+    <figure class="fig-medium">
+      <a class="plate" href="assets/img/scale-law.webp" aria-label="Open the scale law figure at full size">
+        <img src="assets/img/scale-law.webp" width="1699" height="800" loading="lazy" decoding="async"
+             alt="Panel a: zero-shot C4 AUROC of open-source 4x-VAE generators rises from 256p scans to native scans capped at 480p as the ratio of scan to generation resolution approaches one, and a controlled real-through-VAE experiment follows the same trend. Panel b: closed-source models scanned at 256p, native 480p and 720p peak at different scales.">
+      </a>
+      <figcaption>
+        <strong>The scale law.</strong>
+        (a) Zero-shot <math><msub><mi>C</mi><mn>4</mn></msub></math> AUROC of 12 open-source 4×-VAE generators at 256p and at native resolution capped at 480p,
+        with the controlled real-through-VAE experiment in orange.
+        (b) Closed-source models peak at different scan scales.
+      </figcaption>
+    </figure>
+    <p>Temporal decoding structure gives useful cross-generator evidence, but it does not guarantee robustness to future generators.</p>
+  </section>
+
+  <!-- ============================================================ try it -->
+  <section class="section" id="try" aria-labelledby="try-title">
+    <h2 class="section-title" id="try-title">Try it</h2>
+
+    <h3 style="margin-top:0">Live demo</h3>
+    <p>
+      The CheckAI video dashboard runs the phase scan together with the service's own frame-level detector.
+      Videos you upload are processed by that service.
+    </p>
+    <p><a class="btn btn-primary" data-link="demo" href="https://checkai.space/dashboard?mode=video" rel="noopener">Open the live demo</a></p>
+
+    <h3>Run locally</h3>
+    <!-- PLACEHOLDER: the install and scan commands below are placeholders.
+         Replace them with the real commands when the code is public, and delete this comment
+         and the "not public yet" sentence that follows. -->
+    <p class="note">The code is not public yet; these commands will work once it is released.</p>
+    <div class="code-block">
+      <pre><code id="run-snippet">pip install -e .
+python -m vae_rhythm.scan_video your_video.mp4</code></pre>
+      <button class="copy-btn" type="button" data-copy="run-snippet">Copy</button>
+    </div>
+    <p>For a scan that means something:</p>
+    <ul class="plain">
+      <li>Use clips with visible motion and at least 36 frames, the span of the default scan.</li>
+      <li>Scan at the clip's native resolution, downscaling only when the short side exceeds 720 pixels; do not upscale or crop first.</li>
+      <li>Read a flat curve as no evidence either way, not as proof that the video is real.</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================ bibtex -->
+  <section class="section" id="bibtex" aria-labelledby="bibtex-title">
+    <h2 class="section-title" id="bibtex-title">BibTeX</h2>
+    <!-- TODO BibTeX: fill in the arXiv number after the arXiv submission. -->
+    <div class="code-block wide">
+      <pre><code id="bibtex-code">@article{sun2026vaerhythm,
+  title   = {VAE Rhythm: Temporal Decoding Traces for AI-Generated Video Detection},
+  author  = {Sun, Ke and Li, Shuwei and Mei, Haiyang and Shou, Mike Zheng},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</code></pre>
+      <button class="copy-btn" type="button" data-copy="bibtex-code">Copy</button>
+    </div>
+  </section>
+
+  <footer class="site-footer wide">
+    <p>Figures are taken from the paper. This page was written from scratch for this project and uses no third-party code, fonts, analytics or trackers.</p>
+  </footer>
+</main>
+<p class="visually-hidden" id="copy-status" aria-live="polite"></p>
+</body>
+</html>
