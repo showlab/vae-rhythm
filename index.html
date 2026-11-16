@@ -163,7 +163,7 @@ window.PROJECT_LINKS = {
       </div>
       <figure>
         <a class="plate" href="assets/img/rhythm-curves.webp" aria-label="Open the rhythm curves figure at full size">
-          <img src="assets/img/rhythm-curves.webp" width="1241" height="1142" loading="lazy" decoding="async"
+          <img src="assets/img/rhythm-curves.webp" width="1241" height="908" loading="lazy" decoding="async"
                alt="Eight small line charts of the mean residual r(k) against start offset k from 0 to 23. The two real cohorts, AIGVDBench and DF26, are nearly flat. Sora, Wan 2.2 T2V, Kling 3.0, Wan 2.6, Grok Imagine and Seedance 2.0 oscillate regularly, each labelled with its zero-shot AUROC.">
         </a>
         <figcaption>
@@ -248,7 +248,7 @@ window.PROJECT_LINKS = {
       </div>
       <figure>
         <a class="plate" href="assets/img/rhythm-stats.webp" aria-label="Open the rhythm strength and phase figure at full size">
-          <img src="assets/img/rhythm-stats.webp" width="1241" height="764" loading="lazy" decoding="async"
+          <img src="assets/img/rhythm-stats.webp" width="1241" height="908" loading="lazy" decoding="async"
                alt="Two scatter plots, open-source and closed-source. Each point is one generator variant, placed by the share of its clips above the 95th percentile of real clips and by its phase concentration R. Real clips sit in the lower-left corner; most variants lie above and to the right, with Gen-2 and Pika near the real clips.">
         </a>
         <figcaption>
@@ -533,7 +533,6 @@ window.PROJECT_LINKS = {
     <p>
       CaDet leads every column. CaDet-GF, which never sees a generated video, comes close on AIGVDBench, so on this benchmark the VAE pairs carry most of the performance;
       on DF26's closed-source generators it is weak, and there the semantic path of CaDet carries most of the transfer.
-      On the format-normalized GenBuster++ benchmark, TimeSformer and UniFormerV2 lead, and all methods perform poorly on ViF-Bench.
     </p>
 
     <figure class="wide">
@@ -545,8 +544,8 @@ window.PROJECT_LINKS = {
         <strong>What drives the gains.</strong>
         (a) The plug-in's gain on a generator, averaged over the 19 detectors, follows that generator's zero-shot AUROC.
         (b) Weaker detectors gain more on DF26.
-        (c) The artifact and semantic paths succeed on different generators.
-        Bands in (a) and (b) are bootstrap 95% intervals of the fit; shading in (c) shows the density of each group.
+        (c) The artifact and semantic paths succeed on different generators, with colors as in (a).
+        Bands in (a) and (b) are bootstrap 95% intervals of the fit.
       </figcaption>
     </figure>
     <p>
@@ -604,7 +603,7 @@ window.PROJECT_LINKS = {
 
     <figure class="fig-medium">
       <a class="plate" href="assets/img/scale-law.webp" aria-label="Open the scale law figure at full size">
-        <img src="assets/img/scale-law.webp" width="1699" height="800" loading="lazy" decoding="async"
+        <img src="assets/img/scale-law.webp" width="1699" height="805" loading="lazy" decoding="async"
              alt="Panel a: zero-shot C4 AUROC of open-source 4x-VAE generators rises from 256p scans to native scans capped at 480p as the ratio of scan to generation resolution approaches one, and a controlled real-through-VAE experiment follows the same trend. Panel b: closed-source models scanned at 256p, native 480p and 720p peak at different scales.">
       </a>
       <figcaption>
