@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vae-rhythm"
+version = "1.0.0"
+description = "VAE Rhythm: temporal decoding traces for AI-generated video detection (phase scan, plug-in, VAE-pair engine, CaDet)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "numpy>=1.24",
+  "torch>=2.1",
+  "diffusers>=0.33",
+  "transformers>=4.40",
+  "accelerate>=0.30",
+  "av>=11",
+  "pillow>=10",
+  "matplotlib>=3.7",
+  "safetensors>=0.4",
+  "huggingface_hub>=0.24",
+]
+
+[project.optional-dependencies]
+cadet = ["timm>=1.0.20", "peft>=0.11", "opencv-python-headless>=4.8", "scikit-learn>=1.3"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+vae-rhythm = "vae_rhythm.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["vae_rhythm*"]
+
+[tool.setuptools.package-data]
+"vae_rhythm.calibration" = ["*.json"]

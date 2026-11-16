@@ -1,0 +1,16 @@
+# Core (phase scan, plug-in, VAE-pair engine). ffmpeg >= 4.4 must be on PATH (or set VAE_RHYTHM_FFMPEG / VAE_RHYTHM_FFPROBE).
+numpy>=1.24
+torch>=2.1
+diffusers>=0.33
+transformers>=4.40
+accelerate>=0.30
+av>=11
+pillow>=10
+matplotlib>=3.7
+safetensors>=0.4
+huggingface_hub>=0.24
+# CaDet (training and inference)
+timm>=1.0.20
+peft>=0.11
+opencv-python-headless>=4.8
+scikit-learn>=1.3
