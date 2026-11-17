@@ -12,7 +12,7 @@ Ke Sun · Shuwei Li · Haiyang Mei · Mike Zheng Shou<sup>†</sup>
 
 📄 [arXiv Paper](https://arxiv.org/abs/2611.21114) &nbsp;|&nbsp; 🤗 [Daily Paper](https://huggingface.co/papers/2611.21114) &nbsp;|&nbsp; 🧠 [HF Models](https://huggingface.co/Jack97/CaDet) &nbsp;|&nbsp; 🌐 [Project Page](https://showlab.github.io/vae-rhythm/) &nbsp;|&nbsp; 🔍 [Live Demo](https://checkai.space/dashboard?mode=video)
 
-https://github.com/user-attachments/assets/e154557b-0f52-4d13-b7bc-6e8a1c0efeb1
+https://github.com/user-attachments/assets/f078c310-c848-4288-87b6-67c93dfa9cd9
 
 <img src="assets/teaser.webp" width="72%" alt="VAE Rhythm: a 4x causal VAE decodes frames in groups, and the phase scan reads the resulting periodic trace">
 
