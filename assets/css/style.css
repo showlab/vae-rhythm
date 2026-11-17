@@ -413,6 +413,18 @@ figcaption strong { color: var(--ink); font-weight: 650; }
 .fig-narrow { max-width: 34rem; }
 .fig-medium { max-width: 54rem; }
 
+/* ------------------------------------------------------------------ video */
+.video { margin: 2.5rem 0 0; }
+.video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  background: var(--plate);
+  box-shadow: 0 0 0 1px var(--rule);
+}
+
 /* ------------------------------------------------------------------ math */
 math {
   font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Libertinus Math", math;

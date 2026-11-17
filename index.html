@@ -16,9 +16,9 @@
      ================================================================ -->
 <script>
 window.PROJECT_LINKS = {
-  paper:  "#",  // arXiv abstract page, e.g. https://arxiv.org/abs/XXXX.XXXXX
+  paper:  "https://arxiv.org/abs/2611.21114",  // arXiv abstract page
   code:   "https://github.com/showlab/vae-rhythm",  // GitHub repository
-  models: "#",  // Hugging Face model page (CaDet / CaDet-GF weights)
+  models: "https://huggingface.co/Jack97/CaDet",  // Hugging Face model page (CaDet weights)
   data:   "#",  // Hugging Face dataset page (VAE pairs, per-video scores)
   demo:   "https://checkai.space/dashboard?mode=video"  // live demo
 };
@@ -44,6 +44,7 @@ window.PROJECT_LINKS = {
     <a class="site-name" href="#top">VAE Rhythm</a>
     <nav class="site-nav" aria-label="Sections">
       <ul>
+        <li><a href="#video">Video</a></li>
         <li><a href="#abstract">Abstract</a></li>
         <li><a href="#rhythm">VAE Rhythm</a></li>
         <li><a href="#method">Method</a></li>
@@ -95,6 +96,15 @@ window.PROJECT_LINKS = {
     </ul>
 
   </header>
+
+  <!-- ============================================================ video -->
+  <figure class="video wide" id="video">
+    <video controls playsinline preload="metadata" width="1920" height="1080" poster="assets/img/video-poster.webp">
+      <source src="assets/video/vae-rhythm-promo.mp4" type="video/mp4">
+      <a href="assets/video/vae-rhythm-promo.mp4">Download the video (MP4, 32 MB)</a>
+    </video>
+    <figcaption>A three-minute overview of the paper, with narration.</figcaption>
+  </figure>
 
   <!-- ============================================================ overview -->
   <div class="intro-block wide">
@@ -250,12 +260,11 @@ window.PROJECT_LINKS = {
   <!-- ============================================================ bibtex -->
   <section class="section" id="bibtex" aria-labelledby="bibtex-title">
     <h2 class="section-title" id="bibtex-title">BibTeX</h2>
-    <!-- TODO BibTeX: fill in the arXiv number after the arXiv submission. -->
     <div class="code-block wide">
       <pre><code id="bibtex-code">@article{sun2026vaerhythm,
   title   = {VAE Rhythm: Temporal Decoding Traces for AI-Generated Video Detection},
   author  = {Sun, Ke and Li, Shuwei and Mei, Haiyang and Shou, Mike Zheng},
-  journal = {arXiv preprint},
+  journal = {arXiv preprint arXiv:2611.21114},
   year    = {2026}
 }</code></pre>
       <button class="copy-btn" type="button" data-copy="bibtex-code">Copy</button>

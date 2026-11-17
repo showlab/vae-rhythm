@@ -32,10 +32,10 @@ To preview locally, open `index.html` in a browser, or run `python3 -m http.serv
 
 ## Placeholders to fill before publishing
 
-- [ ] **Links**: edit `window.PROJECT_LINKS` at the top of `index.html`. Code (https://github.com/showlab/vae-rhythm) and the live demo are set; paper (arXiv) and models / data (Hugging Face) are still `"#"` and show as "coming soon".
+- [x] **Links**: `window.PROJECT_LINKS` at the top of `index.html` has the paper (arXiv), code, models (Hugging Face) and the live demo; data is `"#"` and shows as "coming soon" until the dataset is public.
 - [x] **Authors**: Ke Sun, Shuwei Li, Haiyang Mei, Mike Zheng Shou (corresponding author), as in the paper.
 - [x] **Affiliations**: Show Lab, National University of Singapore.
-- [ ] **BibTeX**: authors are filled; replace `arXiv:XXXX.XXXXX` after the arXiv submission (search for `TODO BibTeX`).
+- [x] **BibTeX**: arXiv:2611.21114.
 - [x] **Acknowledgements**: removed, as in the arXiv paper.
 - [x] **Abstract**: now the same text as the arXiv paper.
 - [x] **Social preview**: `og:image` and `og:url` point to https://showlab.github.io/vae-rhythm/.
