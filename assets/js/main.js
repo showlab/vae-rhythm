@@ -104,8 +104,8 @@
       });
     }, { rootMargin: '-40% 0px -55% 0px' });
     Object.keys(map).forEach(function (id) { var s = $(id); if (s) io.observe(s); });
-    // the hero and the overview block above the first section clear the highlight
-    Array.prototype.forEach.call(document.querySelectorAll('.hero, .intro-block'), function (el) { io.observe(el); });
+    // the hero above the first tracked section clears the highlight
+    Array.prototype.forEach.call(document.querySelectorAll('.hero'), function (el) { io.observe(el); });
   }
 
   function start() {
