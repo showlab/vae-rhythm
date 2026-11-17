@@ -1,19 +1,18 @@
 <div align="center">
 
-# VAE Rhythm
+<img src="assets/title.svg" width="460" alt="VAE Rhythm">
 
 ### Temporal Decoding Traces for AI-Generated Video Detection
 
-**Ke Sun** · **Shuwei Li** · **Haiyang Mei** · **Mike Zheng Shou**<sup>†</sup>
+Ke Sun · Shuwei Li · Haiyang Mei · Mike Zheng Shou<sup>†</sup>
 
-Show Lab, National University of Singapore &nbsp;&nbsp;<sup>†</sup>Corresponding author
+<sup>†</sup> corresponding author
 
-[![Project page](https://img.shields.io/badge/Project-Page-1f6feb?style=flat-square)](https://showlab.github.io/vae-rhythm/)
-[![Video](https://img.shields.io/badge/Video-3%20min-e05d44?style=flat-square)](https://showlab.github.io/vae-rhythm/#video)
-[![arXiv](https://img.shields.io/badge/arXiv-2611.21114-b31b1b?style=flat-square)](https://arxiv.org/abs/2611.21114)
-[![Models](https://img.shields.io/badge/Models-Hugging%20Face-f4b400?style=flat-square)](https://huggingface.co/Jack97/CaDet)
-[![Live demo](https://img.shields.io/badge/Live-demo-2ea44f?style=flat-square)](https://checkai.space/dashboard?mode=video)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](LICENSE)
+**Show Lab @ National University of Singapore**
+
+📄 [arXiv Paper](https://arxiv.org/abs/2611.21114) &nbsp;|&nbsp; 🤗 [Daily Paper](https://huggingface.co/papers/2611.21114) &nbsp;|&nbsp; 🧠 [HF Models](https://huggingface.co/Jack97/CaDet) &nbsp;|&nbsp; 🌐 [Project Page](https://showlab.github.io/vae-rhythm/) &nbsp;|&nbsp; 🔍 [Live Demo](https://checkai.space/dashboard?mode=video)
+
+<a href="https://showlab.github.io/vae-rhythm/#video"><img src="assets/video-poster.webp" width="100%" alt="Play the three-minute overview video of VAE Rhythm on the project page"></a>
 
 <img src="assets/teaser.webp" width="72%" alt="VAE Rhythm: a 4x causal VAE decodes frames in groups, and the phase scan reads the resulting periodic trace">
 
