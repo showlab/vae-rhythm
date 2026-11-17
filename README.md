@@ -9,8 +9,9 @@
 Show Lab, National University of Singapore &nbsp;&nbsp;<sup>†</sup>Corresponding author
 
 [![Project page](https://img.shields.io/badge/Project-Page-1f6feb?style=flat-square)](https://showlab.github.io/vae-rhythm/)
-![arXiv](https://img.shields.io/badge/arXiv-coming%20soon-b31b1b?style=flat-square)
-![Models](https://img.shields.io/badge/Models-coming%20soon-f4b400?style=flat-square)
+[![Video](https://img.shields.io/badge/Video-3%20min-e05d44?style=flat-square)](https://showlab.github.io/vae-rhythm/#video)
+[![arXiv](https://img.shields.io/badge/arXiv-2611.21114-b31b1b?style=flat-square)](https://arxiv.org/abs/2611.21114)
+[![Models](https://img.shields.io/badge/Models-Hugging%20Face-f4b400?style=flat-square)](https://huggingface.co/Jack97/CaDet)
 [![Live demo](https://img.shields.io/badge/Live-demo-2ea44f?style=flat-square)](https://checkai.space/dashboard?mode=video)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](LICENSE)
 
@@ -88,7 +89,7 @@ pip install -e ".[cadet,dev]"                   # core + CaDet + tests
 pytest -q                                       # CPU tests, about 5 s
 ```
 
-The Wan2.1 VAE (about 0.5 GB) is downloaded from Hugging Face on first use. CaDet also needs the DINOv3 ViT-L/16 weights through `timm` (`vit_large_patch16_dinov3.lvd1689m`). Accept the DINOv3 license on Hugging Face and log in with `huggingface-cli login` if the download is refused.
+The Wan2.1 VAE (about 0.5 GB) is downloaded from Hugging Face on first use. CaDet also needs the DINOv3 ViT-L/16 weights through `timm` (`vit_large_patch16_dinov3.lvd1689m`). Accept the DINOv3 license on Hugging Face and log in with `hf auth login` if the download is refused.
 
 > [!TIP]
 > Handing this repository to a coding agent? Point it to [`AGENTS.md`](AGENTS.md), which contains a step-by-step, verifiable setup procedure.
@@ -135,10 +136,10 @@ All CSVs use a `video_id` column. Manifests also have `path`, `label` (0 real, 1
 
 ### Run CaDet
 
-The CaDet weights (three seeds, a few MB each) are coming soon on Hugging Face. Once they are public:
+The CaDet weights (three seeds, about 17 MB each) are on [Hugging Face](https://huggingface.co/Jack97/CaDet):
 
 ```bash
-huggingface-cli download <org>/CaDet --local-dir checkpoints/cadet       # seed0/ seed1/ seed2/
+hf download Jack97/CaDet --local-dir checkpoints/cadet       # seed0/ seed1/ seed2/
 vae-rhythm predict my_video.mp4 --weights checkpoints/cadet/seed0
 # my_video.mp4: CaDet score ... (semantic z ..., artifact z ...)
 ```
@@ -183,7 +184,7 @@ tests/              CPU unit tests
 @article{sun2026vaerhythm,
   title   = {VAE Rhythm: Temporal Decoding Traces for AI-Generated Video Detection},
   author  = {Sun, Ke and Li, Shuwei and Mei, Haiyang and Shou, Mike Zheng},
-  journal = {arXiv preprint},
+  journal = {arXiv preprint arXiv:2611.21114},
   year    = {2026}
 }
 ```

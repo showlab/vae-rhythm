@@ -99,11 +99,11 @@ scan alone as a definitive real/fake verdict.
 ## 5. Pretrained CaDet (optional)
 
 1. The user must accept the DINOv3 license for `facebook/dinov3-vitl16-pretrain-lvd1689m` on Hugging Face;
-   then `huggingface-cli login`.
-2. Download the adapters (a few MB per seed). The Hugging Face release is coming soon; until then ask the user where the weights are. Then run:
+   then `hf auth login`.
+2. Download the adapters (about 17 MB per seed) from Hugging Face:
 
 ```bash
-huggingface-cli download <org>/CaDet --local-dir checkpoints/cadet
+hf download Jack97/CaDet --local-dir checkpoints/cadet
 vae-rhythm predict path/to/video.mp4 --weights checkpoints/cadet/seed0
 ```
 

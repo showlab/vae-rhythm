@@ -16,9 +16,9 @@ The 2026 sets contain only generated clips; the paper pairs them with the DF26 r
 reading, with the AIGVDBench test reals).
 
 ```bash
-huggingface-cli download AIGVDBench/AIGVDBench --repo-type dataset --local-dir data/AIGVDBench
+hf download AIGVDBench/AIGVDBench --repo-type dataset --local-dir data/AIGVDBench
 python scripts/prepare_aigvdbench.py --root data/AIGVDBench --out data/aigvd          # -> data/aigvd/manifest_aigvd.csv
-huggingface-cli download DF26/DF26 --repo-type dataset --local-dir data/DF26
+hf download DF26/DF26 --repo-type dataset --local-dir data/DF26
 python scripts/prepare_df26.py --root data/DF26 --out data/df26/manifest_df26.csv
 ```
 

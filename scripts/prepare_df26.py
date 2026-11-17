@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """DF26 (test only) -> manifest. Download (gated; accept the terms on the dataset page first):
-    huggingface-cli download DF26/DF26 --repo-type dataset --local-dir data/DF26
+    hf download DF26/DF26 --repo-type dataset --local-dir data/DF26
 Columns: dataset=df26, subset=generator ("Real" for real clips), group (real / open_t2v / open_i2v / closed),
 label, video_id (relative path without extension), pair_id (clip id of the paired real video -> paired 2AFC), path.
 

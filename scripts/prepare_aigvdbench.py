@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Extract AIGVDBench and write its manifest (the paper's training / validation / test protocol).
 
-Download first:  huggingface-cli download AIGVDBench/AIGVDBench --repo-type dataset --local-dir data/AIGVDBench
+Download first:  hf download AIGVDBench/AIGVDBench --repo-type dataset --local-dir data/AIGVDBench
 Protocol (official split files Split/{train,val,test}.jsonl):
   train = Open-Sora (T2V) 14,000 + real 14,000 (same Video_id), val 3,000 + 3,000, test 3,000 + 3,000;
   the other 19 open-source generators: their 3,000 test clips each; 11 closed-source generators: 2,000 clips each.
