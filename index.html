@@ -17,6 +17,7 @@
 <script>
 window.PROJECT_LINKS = {
   paper:  "https://arxiv.org/abs/2611.21114",  // arXiv abstract page
+  hf_paper: "https://huggingface.co/papers/2611.21114",  // Hugging Face paper page
   code:   "https://github.com/showlab/vae-rhythm",  // GitHub repository
   models: "https://huggingface.co/Jack97/CaDet",  // Hugging Face model page (CaDet weights)
   data:   "#",  // Hugging Face dataset page (VAE pairs, per-video scores)
@@ -92,22 +93,25 @@ window.PROJECT_LINKS = {
       <span class="nowrap"><sup>&dagger;</sup>Corresponding author</span>
     </p>
 
-    <ul class="links" aria-label="Paper, code, models, data and live demo">
-      <li><a class="btn" data-link="paper" href="#">
+    <ul class="links" aria-label="Paper, Hugging Face paper and models, code, data and live demo">
+      <li><a class="btn" data-link="paper" href="https://arxiv.org/abs/2611.21114">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
-        Paper <span class="soon">coming soon</span></a></li>
-      <li><a class="btn" data-link="code" href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>
+        arXiv Paper <span class="soon">coming soon</span></a></li>
+      <li><a class="btn" data-link="hf_paper" href="https://huggingface.co/papers/2611.21114">
+        <svg class="icon-hf" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11.5" r="8.5" fill="#FFD21E" stroke="#E0B100" stroke-width="1"/><circle cx="9.2" cy="10" r="1.15" fill="#1D2430"/><circle cx="14.8" cy="10" r="1.15" fill="#1D2430"/><path d="M9.1 13.2c.7 1.3 2 2 2.9 2s2.2-.7 2.9-2" fill="none" stroke="#1D2430" stroke-width="1.4" stroke-linecap="round"/><path d="M5.2 15.8c1.1-.8 2.6-.5 3.3.6.5.8.2 1.9-.7 2.3-1.3.6-2.9-.2-3.2-1.6-.1-.5.1-1 .6-1.3zm13.6 0c-1.1-.8-2.6-.5-3.3.6-.5.8-.2 1.9.7 2.3 1.3.6 2.9-.2 3.2-1.6.1-.5-.1-1-.6-1.3z" fill="#FFD21E" stroke="#E0B100" stroke-width="0.9"/></svg>
+        HF Paper <span class="soon">coming soon</span></a></li>
+      <li><a class="btn" data-link="models" href="https://huggingface.co/Jack97/CaDet">
+        <svg class="icon-hf" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="11.5" r="8.5" fill="#FFD21E" stroke="#E0B100" stroke-width="1"/><circle cx="9.2" cy="10" r="1.15" fill="#1D2430"/><circle cx="14.8" cy="10" r="1.15" fill="#1D2430"/><path d="M9.1 13.2c.7 1.3 2 2 2.9 2s2.2-.7 2.9-2" fill="none" stroke="#1D2430" stroke-width="1.4" stroke-linecap="round"/><path d="M5.2 15.8c1.1-.8 2.6-.5 3.3.6.5.8.2 1.9-.7 2.3-1.3.6-2.9-.2-3.2-1.6-.1-.5.1-1 .6-1.3zm13.6 0c-1.1-.8-2.6-.5-3.3.6-.5.8-.2 1.9.7 2.3 1.3.6 2.9-.2 3.2-1.6.1-.5-.1-1-.6-1.3z" fill="#FFD21E" stroke="#E0B100" stroke-width="0.9"/></svg>
+        HF Models <span class="soon">coming soon</span></a></li>
+      <li><a class="btn" data-link="code" href="https://github.com/showlab/vae-rhythm">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.49A10.25 10.25 0 0 0 22 12.23C22 6.58 17.52 2 12 2z"/></svg>
         Code <span class="soon">coming soon</span></a></li>
-      <li><a class="btn" data-link="models" href="#">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>
-        Models <span class="soon">coming soon</span></a></li>
       <li><a class="btn" data-link="data" href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
-        Data <span class="soon">coming soon</span></a></li>
+        HF Data <span class="soon">coming soon</span></a></li>
       <li><a class="btn btn-primary" data-link="demo" href="https://checkai.space/dashboard?mode=video" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg>
-        Live demo</a></li>
+        Live Demo</a></li>
     </ul>
   </header>
 
@@ -274,7 +278,7 @@ window.PROJECT_LINKS = {
         </div>
         <div class="method-col">
           <span class="method-tag">(b) CaDet: two-path detector</span>
-          <p>On one frozen DINOv3 ViT-L/16 backbone, CaDet trains an artifact path (LoRA) with the VAE pairs and a semantic path (rank-one residual) without them, summing standardized scores.</p>
+          <p>On one frozen DINOv3 ViT-L/16 backbone, CaDet trains an artifact path (LoRA) with the VAE pairs and a semantic path (rank-one residual) without them, summing standardized scores. Pretrained weights (3 seeds) are available on <a data-link="models" href="https://huggingface.co/Jack97/CaDet">Hugging Face</a>.</p>
         </div>
         <div class="method-col">
           <span class="method-tag">(c) Training-free plug-in</span>
@@ -366,7 +370,13 @@ window.PROJECT_LINKS = {
     <div class="swiss-row">
       <div class="swiss-head">
         <h2 class="section-title" id="bibtex-title">BibTeX</h2>
-        <p class="swiss-note">If you find VAE Rhythm or CaDet useful, please cite our preprint.</p>
+        <p class="swiss-note">Paper, pretrained CaDet adapters, and code:</p>
+        <ul class="resource-links">
+          <li><a data-link="paper" href="https://arxiv.org/abs/2611.21114">arXiv Preprint (2611.21114)</a></li>
+          <li><a data-link="hf_paper" href="https://huggingface.co/papers/2611.21114">Hugging Face Paper</a></li>
+          <li><a data-link="models" href="https://huggingface.co/Jack97/CaDet">Hugging Face Models (CaDet)</a></li>
+          <li><a data-link="code" href="https://github.com/showlab/vae-rhythm">GitHub Repository</a></li>
+        </ul>
       </div>
       <div class="code-block">
         <pre><code id="bibtex-code">@article{sun2026vaerhythm,

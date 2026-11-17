@@ -243,7 +243,7 @@ code, pre, kbd { font-family: var(--mono); font-size: 0.875em; }
 .hero {
   text-align: center;
   padding: 2.75rem 0 2rem;
-  max-width: 54rem;
+  max-width: 62rem;
   margin: 0 auto;
 }
 @media (min-width: 48rem) {
@@ -347,7 +347,8 @@ code, pre, kbd { font-family: var(--mono); font-size: 0.875em; }
   background: var(--surface-soft);
   text-decoration: none;
 }
-.btn svg { width: 1.02rem; height: 1.02rem; flex: none; }
+.btn svg { width: 1.04rem; height: 1.04rem; flex: none; }
+.btn svg.icon-hf { width: 1.14rem; height: 1.14rem; }
 .btn-primary {
   background: var(--btn-bg);
   border-color: var(--btn-bg);
@@ -664,6 +665,29 @@ a.plate:focus-visible { outline-offset: -3px; }
   line-height: 1.5;
   color: var(--muted);
   margin: 0;
+}
+
+.resource-links {
+  list-style: none;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.32rem;
+  font: 500 0.85rem/1.45 var(--sans);
+}
+.resource-links a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.resource-links a::before {
+  content: "\2197";
+  font-size: 0.78em;
+  color: var(--muted);
+}
+.resource-links a:hover {
+  text-decoration: underline;
 }
 
 .abstract-card {

@@ -33,6 +33,7 @@ To preview locally, open `index.html` in a browser, or run `python3 -m http.serv
 ## Placeholders to fill before publishing
 
 - [x] **Links**: `window.PROJECT_LINKS` at the top of `index.html` has the paper (arXiv), code, models (Hugging Face) and the live demo; data is `"#"` and shows as "coming soon" until the dataset is public.
+  `hf_paper` also links to the Hugging Face paper page (`https://huggingface.co/papers/2611.21114`).
 - [x] **Authors**: Ke Sun, Shuwei Li, Haiyang Mei, Mike Zheng Shou (corresponding author), as in the paper.
 - [x] **Affiliations**: Show Lab, National University of Singapore.
 - [x] **BibTeX**: arXiv:2611.21114.
